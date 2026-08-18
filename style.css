@@ -1,0 +1,425 @@
+/* ==========================================================
+   JR PRECISION — stylesheet
+   Colors are defined once below. Change them here to retheme.
+   ========================================================== */
+
+:root{
+  /* sampled from the logo: hue 210, 100% saturation, matched to the
+     logo's own lightness range (its blue averages 41% light, not 55%) */
+  --blue:        #0061c2;
+  --blue-bright: #0078f0;
+  --blue-deep:   #004790;
+  --blue-rgb:    0,97,194;    /* same as --blue, for rgba() shadows and glows */
+  --ink:         #0a0c0f;   /* page background */
+  --panel:       #12161b;   /* section background */
+  --panel-2:     #191e25;   /* cards */
+  --steel:       #c9d1d9;   /* body text */
+  --steel-dim:   #8b95a1;   /* muted text */
+  --line:        #262d36;   /* borders */
+  --white:       #ffffff;
+  --wrap:        1180px;
+  --radius:      4px;
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+
+html{ scroll-behavior:smooth; }
+
+body{
+  margin:0;
+  background:var(--ink);
+  color:var(--steel);
+  font-family:'Barlow',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;
+  font-size:17px;
+  line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+}
+
+img{ max-width:100%; display:block; }
+a{ color:var(--blue-bright); text-decoration:none; }
+a:hover{ color:var(--white); }
+
+.wrap{
+  width:100%;
+  max-width:var(--wrap);
+  margin:0 auto;
+  padding:0 24px;
+}
+
+h1,h2,h3{
+  font-family:'Barlow Condensed',Impact,'Arial Narrow',sans-serif;
+  text-transform:uppercase;
+  letter-spacing:.02em;
+  color:var(--white);
+  margin:0 0 .5em;
+  line-height:1.05;
+}
+
+/* ---------- HEADER ---------- */
+.site-header{
+  position:sticky;
+  top:0;
+  z-index:50;
+  background:rgba(10,12,15,.92);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+}
+.header-inner{
+  display:flex;
+  align-items:center;
+  gap:24px;
+  min-height:82px;
+  /* Full-bleed: the header ignores the centred 1180px column so the logo
+     sits at the window's left edge and the phone button at its right. */
+  max-width:none;
+  padding-left:32px;
+  padding-right:32px;
+}
+.brand{ display:flex; align-items:center; flex-shrink:0; }
+
+/* ---------- LOGO LEGIBILITY ----------
+   The logo art is untouched. "PRECISION" and the tagline under it are
+   near-black, so on this dark background they'd disappear. Two extra copies
+   of the same image are stacked on top, each clipped to just one of those
+   bands and filtered to lift the dark tones. contrast() below 1 is what
+   raises pure black toward grey — brightness() alone can't, since anything
+   multiplied by zero is still zero.
+   If you ever swap in a differently-proportioned logo, adjust the clip-path
+   percentages: inset(TOP RIGHT BOTTOM LEFT), measured from each edge. */
+.logo{ position:relative; display:inline-block; line-height:0; }
+.logo > img{ display:block; width:100%; height:auto; }
+.logo-lift{
+  position:absolute;
+  top:0; left:0;
+  width:100%; height:100%;
+  pointer-events:none;
+}
+.lift-word{                    /* "PRECISION" only — stops short of the blue bars */
+  clip-path:inset(65% 0 22.7% 0);
+  filter:contrast(.44) brightness(1.8);
+}
+.lift-tag{                     /* MACHINING · FABRICATION · PROTOTYPES         */
+  clip-path:inset(80% 0 14.5% 14%);   /* left 14% skips the blue /// slashes */
+  filter:contrast(.30) brightness(2.6);
+}
+
+.brand-logo{ width:140px; }
+
+.nav{
+  margin-left:auto;
+  display:flex;
+  gap:30px;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:19px;
+  font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+.nav a{
+  color:var(--steel);
+  padding:6px 0;
+  border-bottom:2px solid transparent;
+  transition:color .15s, border-color .15s;
+}
+.nav a:hover{ color:var(--white); border-bottom-color:var(--blue); }
+
+/* ---------- BUTTONS ---------- */
+.btn{
+  display:inline-block;
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;
+  font-size:20px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  padding:13px 28px;
+  border-radius:var(--radius);
+  border:2px solid transparent;
+  transition:transform .12s, background .15s, border-color .15s, color .15s;
+  white-space:nowrap;
+}
+.btn:hover{ transform:translateY(-2px); }
+
+.btn-primary{
+  background:linear-gradient(180deg,var(--blue-bright),var(--blue));
+  color:var(--white);
+  box-shadow:0 6px 22px rgba(var(--blue-rgb),.38);
+}
+.btn-primary:hover{ background:linear-gradient(180deg,var(--blue),var(--blue-deep)); color:var(--white); }
+
+.btn-ghost{
+  border-color:#3a4452;
+  color:var(--white);
+  background:transparent;
+}
+.btn-ghost:hover{ border-color:var(--blue-bright); color:var(--white); }
+
+.btn-call{
+  background:var(--blue);
+  color:var(--white);
+  font-size:19px;
+  padding:11px 22px;
+  flex-shrink:0;
+}
+.btn-call:hover{ background:var(--blue-deep); color:var(--white); }
+.btn-call-label{ opacity:.75; margin-right:4px; }
+
+/* ---------- HERO ---------- */
+.hero{
+  position:relative;
+  overflow:hidden;
+  border-bottom:3px solid var(--blue);
+}
+.hero-media{
+  position:absolute;
+  inset:0;
+  background:url('images/milling.jpg') center/cover no-repeat;
+  filter:grayscale(.55) contrast(1.05) brightness(.42);
+  transform:scale(1.04);
+}
+.hero-media::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(ellipse at 30% 40%, rgba(var(--blue-rgb),.24), transparent 62%),
+    linear-gradient(180deg, rgba(10,12,15,.72) 0%, rgba(10,12,15,.86) 100%);
+}
+.hero-inner{
+  position:relative;
+  padding:96px 24px 104px;
+  max-width:900px;
+  text-align:center;
+}
+.hero-logo{
+  width:min(560px,88%);
+  margin:0 auto 34px;
+}
+.hero h1{
+  font-size:clamp(2.5rem,6.2vw,4.6rem);
+  font-weight:700;
+  margin-bottom:18px;
+  text-shadow:0 3px 18px rgba(0,0,0,.6);
+}
+.hero h1 span{ color:var(--blue-bright); }
+.hero-sub{
+  font-size:clamp(1.05rem,2vw,1.3rem);
+  color:#dbe2ea;
+  max-width:680px;
+  margin:0 auto 34px;
+}
+.hero-actions{
+  display:flex;
+  gap:14px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+
+/* ---------- SECTIONS ---------- */
+.section{ padding:84px 0; }
+.section-title{
+  font-size:clamp(2rem,4.2vw,3rem);
+  font-weight:700;
+  text-align:center;
+  position:relative;
+  padding-bottom:20px;
+  margin-bottom:34px;
+}
+.section-title::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  bottom:0;
+  transform:translateX(-50%);
+  width:74px;
+  height:4px;
+  background:linear-gradient(90deg,var(--blue-deep),var(--blue-bright));
+  border-radius:2px;
+}
+.lead{
+  max-width:760px;
+  margin:0 auto;
+  text-align:center;
+  font-size:1.1rem;
+  color:var(--steel);
+}
+
+.intro{ background:var(--panel); border-bottom:1px solid var(--line); }
+
+/* ---------- CARDS ---------- */
+.cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(290px,1fr));
+  gap:26px;
+  margin-top:46px;
+}
+.card{
+  background:var(--panel-2);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  transition:transform .18s, border-color .18s, box-shadow .18s;
+}
+.card:hover{
+  transform:translateY(-5px);
+  border-color:var(--blue);
+  box-shadow:0 14px 34px rgba(0,0,0,.5);
+}
+/* icon block on each service card */
+.card-icon{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  height:146px;
+  background:
+    radial-gradient(ellipse at 50% 120%, rgba(var(--blue-rgb),.22), transparent 70%),
+    linear-gradient(180deg,#1d232b,#151a20);
+  border-bottom:3px solid var(--blue);
+}
+.card-icon svg{
+  width:86px;
+  height:86px;
+  fill:none;
+  stroke:var(--blue-bright);
+  stroke-width:2.4;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  transition:stroke .18s, transform .18s;
+}
+.card:hover .card-icon svg{ stroke:var(--white); transform:translateY(-3px); }
+
+.card-body{ padding:24px 24px 28px; }
+.card-body h3{
+  font-size:1.55rem;
+  font-weight:700;
+  margin-bottom:10px;
+}
+.card-body p{ margin:0; color:var(--steel-dim); font-size:1rem; }
+
+/* ---------- STRIP ---------- */
+.strip{
+  background:linear-gradient(180deg,var(--blue-deep),#00396f);
+  border-top:1px solid rgba(255,255,255,.08);
+  border-bottom:1px solid rgba(0,0,0,.4);
+}
+.strip-inner{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:10px;
+  padding-top:38px;
+  padding-bottom:38px;
+  text-align:center;
+}
+.strip-item strong{
+  display:block;
+  font-family:'Barlow Condensed',sans-serif;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  font-size:1.55rem;
+  color:var(--white);
+  line-height:1.2;
+}
+.strip-item span{ color:#b9d6f7; font-size:.98rem; }
+
+/* ---------- GALLERY ---------- */
+.gallery{ background:var(--panel); }
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:18px;
+  margin-top:44px;
+}
+.grid figure{
+  margin:0;
+  overflow:hidden;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  background:#000;
+}
+.grid img{
+  width:100%;
+  height:260px;
+  object-fit:cover;
+  filter:grayscale(.35) brightness(.9);
+  transition:transform .35s, filter .35s;
+}
+.grid figure:hover img{ transform:scale(1.06); filter:grayscale(0) brightness(1); }
+
+/* ---------- CONTACT ---------- */
+.contact{ background:var(--ink); }
+.contact-cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:20px;
+  margin-top:40px;
+}
+.contact-card{
+  display:block;
+  text-align:center;
+  padding:30px 22px;
+  background:var(--panel-2);
+  border:1px solid var(--line);
+  border-left:4px solid var(--blue);
+  border-radius:var(--radius);
+  transition:transform .15s, border-color .15s, background .15s;
+}
+.contact-card:hover{ transform:translateY(-4px); background:#1f252d; border-color:var(--blue-bright); }
+.contact-label{
+  display:block;
+  font-family:'Barlow Condensed',sans-serif;
+  text-transform:uppercase;
+  letter-spacing:.16em;
+  font-size:.9rem;
+  color:var(--blue-bright);
+  margin-bottom:6px;
+}
+.contact-value{
+  display:block;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:1.7rem;
+  font-weight:600;
+  color:var(--white);
+  word-break:break-word;
+}
+
+/* ---------- FOOTER ---------- */
+.site-footer{
+  background:#06080a;
+  border-top:3px solid var(--blue);
+  padding:44px 0 34px;
+  text-align:center;
+}
+.footer-logo{
+  width:250px;
+  margin:0 auto 14px;
+}
+.footer-tag{
+  font-family:'Barlow Condensed',sans-serif;
+  text-transform:uppercase;
+  letter-spacing:.22em;
+  font-size:.9rem;
+  color:var(--steel-dim);
+  margin:0 0 14px;
+}
+.footer-contact{ margin:0 0 16px; font-size:1.02rem; }
+.footer-contact .dot{ color:var(--steel-dim); margin:0 10px; }
+.copyright{ margin:0; font-size:.85rem; color:#5c6773; }
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width:820px){
+  .nav{ display:none; }
+  .header-inner{ min-height:70px; justify-content:space-between; }
+  .brand-logo{ width:96px; }
+  .section{ padding:60px 0; }
+  .hero-inner{ padding:64px 24px 72px; }
+}
+@media (max-width:420px){
+  .btn-call{ font-size:16px; padding:9px 14px; }
+  .btn-call-label{ display:none; }
+  .contact-value{ font-size:1.25rem; }
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{ animation:none !important; transition:none !important; scroll-behavior:auto !important; }
+}
